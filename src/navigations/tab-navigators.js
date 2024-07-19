@@ -26,7 +26,7 @@ export default function TabNavigation() {
             focused ? (
               <SvgComponent color="#1e3a8a" />
             ) : (
-              <SvgComponent color="black" />
+              <SvgComponent color="gray" />
             ),
           tabBarLabel: ({focused, color}) => (
             <Text
@@ -46,7 +46,7 @@ export default function TabNavigation() {
             focused ? (
               <ProfileIcon color="#1e3a8a" />
             ) : (
-              <ProfileIcon color="black" />
+              <ProfileIcon color="gray" />
             ),
           tabBarLabel: ({focused, color}) => (
             <Text

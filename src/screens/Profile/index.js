@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Text} from 'react-native';
+import {Text, Image, View} from 'react-native';
 import Layout from '../../components/Layout/Layout';
 import {useSelector} from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -40,6 +40,12 @@ export default function Profile({navigation}) {
 
   return (
     <Layout>
+      <View className="justify-center items-center mt-2">
+        <Image
+          source={require('../../assets/image/logo.png')}
+          className="w-[30]  h-[30]"
+        />
+      </View>
       <Text className="text-xl text-blue-500">Profile</Text>
       <Text className="text-green-600">{token}</Text>
       <Text className="text-red-700">{role}</Text>

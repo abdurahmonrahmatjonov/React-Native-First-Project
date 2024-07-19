@@ -1,138 +1,65 @@
 import React, {useEffect, useState} from 'react';
-import {
-  ActivityIndicator,
-  Modal,
-  Text,
-  View,
-  ScrollView,
-  TouchableOpacity,
-} from 'react-native';
+import {Text, View, TouchableOpacity, Image} from 'react-native';
 import Layout from '../../components/Layout/Layout';
 import {api} from '../../service/http';
-import {aggregateDocumentsWithDriver} from '../../utils/document';
+import DeliveryIcon from '../../assets/icons/DeliveryIcon';
+import PurchaseIcon from '../../assets/icons/PurchaseIcon';
+import ReportsIcon from '../../assets/icons/ReportsIcon';
+import SalesIcon from '../../assets/icons/SalesIcon';
+import DashboardReportIcon from '../../assets/icons/DashboardReportIcon';
 
-export default function Home() {
+export default function Home({navigation}) {
   const [data, setData] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res = await api.get('api/yakunlangansotuvlar');
-        const resData = aggregateDocumentsWithDriver(res.data);
-        setData(resData);
-        console.log('Sales resData:', resData);
-      } catch (error) {
-        console.error('Error fetching sales data', error);
-      }
-    };
-
-    fetchData();
-  }, []);
-
-  const handleRowPress = item => {
-    setSelectedItem(item);
-    setModalVisible(true);
-  };
-
-  const renderItem = ({item}) => (
-    <TouchableOpacity onPress={() => handleRowPress(item)}>
-      <View className="flex-row border-b gap-5 border-gray-300 py-2">
-        <View className="w-48  px-2">
-          <Text className="text-base">{item.cardName}</Text>
-        </View>
-        <View className="w-24 px-2">
-          <Text className="text-base">{item.baseEntry}</Text>
-        </View>
-        <View className="w-[150] px-2">
-          <Text className="text-base">{item.cardCode}</Text>
-        </View>
-        <View className="w-24 px-2">
-          <Text className="text-base">{item.docTotal}</Text>
-        </View>
-        <View className="w-32 px-2">
-          <Text className="text-base">{item.docTotalQuantity}</Text>
-        </View>
-        <View className="w-48 px-2">
-          <Text className="text-base">{item.driver}</Text>
-        </View>
-      </View>
-    </TouchableOpacity>
-  );
-
   return (
     <Layout>
-      <Text className="text-xl text-blue-500">Home</Text>
-      {data ? (
-        <View>
-          <Text className="text-lg my-2">Sales Data:</Text>
-          <ScrollView horizontal>
-            <View className="my-5">
-              <View
-                className="flex-row border-b gap-5 border-gray-300"
-                style={{height: 80}}>
-                <View className="w-48 px-2 justify-center">
-                  <Text className="text-base font-bold">Card Name</Text>
-                </View>
-                <View className="w-24 px-2 justify-center">
-                  <Text className="text-base font-bold">Base Entry</Text>
-                </View>
-                <View className="w-[150] px-2 justify-center">
-                  <Text className="text-base font-bold">Card Code</Text>
-                </View>
-                <View className="w-24 px-2 justify-center">
-                  <Text className="text-base font-bold">Doc Total</Text>
-                </View>
-                <View className="w-32 px-2 justify-center">
-                  <Text className="text-base font-bold">
-                    Doc Total Quantity
-                  </Text>
-                </View>
-                <View className="w-48 px-2 justify-center">
-                  <Text className="text-base font-bold">Driver</Text>
-                </View>
-              </View>
-              <ScrollView>
-                {data.map((item, index) => (
-                  <View key={index}>{renderItem({item})}</View>
-                ))}
-              </ScrollView>
-            </View>
-          </ScrollView>
+      <View className="justify-center items-center mt-2">
+        <Image
+          source={require('../../assets/image/logo.png')}
+          className="w-[30]  h-[30]"
+        />
+      </View>
 
-          {selectedItem && (
-            <Modal
-              transparent={true}
-              animationType="slide"
-              visible={modalVisible}
-              onRequestClose={() => setModalVisible(false)}>
-              <View className="flex-1 justify-center items-center bg-black/50">
-                <View className="bg-white p-5 rounded-lg w-4/5 items-center">
-                  <Text className="text-lg font-bold mb-4">Details</Text>
-                  <Text>Card Name: {selectedItem.cardName}</Text>
-                  <Text>Base Entry: {selectedItem.baseEntry}</Text>
-                  <Text>Card Code: {selectedItem.cardCode}</Text>
-                  <Text>Doc Total: {selectedItem.docTotal}</Text>
-                  <Text>
-                    Doc Total Quantity: {selectedItem.docTotalQuantity}
-                  </Text>
-                  <Text>Price: {selectedItem.price}</Text>
-                  <Text>ugpName: {selectedItem.ugpName}</Text>
-                  <Text>measureUnit: {selectedItem.measureUnit}</Text>
+      <View className="mt-4">
+        <TouchableOpacity
+          onPress={() => navigation.push('SalesScreen')}
+          className="flex-row justify-between  bg-white rounded-lg p-3  drop-shadow-xl mt-5">
+          <Text className="text-blue-900 font-extrabold text-lg">Sotuvlar</Text>
+          <SalesIcon color="#1e3a8a" />
+        </TouchableOpacity>
 
-                  <Text>Driver: {selectedItem.driver}</Text>
-                  <TouchableOpacity onPress={() => setModalVisible(false)}>
-                    <Text className="mt-4 text-blue-500">Close</Text>
-                  </TouchableOpacity>
-                </View>
-              </View>
-            </Modal>
-          )}
-        </View>
-      ) : (
-        <ActivityIndicator />
-      )}
+        <TouchableOpacity
+          onPress={() => navigation.push('StockTransferlinesScreen')}
+          className="flex-row justify-between  bg-white rounded-lg p-3  drop-shadow-xl mt-5">
+          <Text className="text-blue-900 font-extrabold text-lg">
+            Yuk ko'chirish
+          </Text>
+          <DeliveryIcon color="#1e3a8a" />
+        </TouchableOpacity>
+
+        <TouchableOpacity className="flex-row justify-between  bg-white rounded-lg p-3  drop-shadow-xl mt-5">
+          <Text className="text-blue-900 font-extrabold text-lg">Haridlar</Text>
+          <PurchaseIcon color="#1e3a8a" />
+        </TouchableOpacity>
+
+        <TouchableOpacity className="flex-row justify-between  bg-white rounded-lg p-3  drop-shadow-xl mt-5">
+          <Text className="text-blue-900 font-extrabold text-lg">
+            Ombor hisobi
+          </Text>
+          <ReportsIcon color="#1e3a8a" />
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          onPress={() => navigation.push('DashboardReportScreen')}
+          className="flex-row justify-between  bg-white rounded-lg p-3  drop-shadow-xl mt-5">
+          <Text className="text-blue-900 font-extrabold text-lg">
+            Dashboard hisoboti
+          </Text>
+          <DashboardReportIcon color="#1e3a8a" />
+        </TouchableOpacity>
+      </View>
     </Layout>
   );
 }
